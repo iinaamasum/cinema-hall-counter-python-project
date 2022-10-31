@@ -10,11 +10,11 @@
 """
 
 import re
+from secrets import choice
+from xml.etree.ElementInclude import default_loader
+
 
 # Star_Cinema class
-from lib2to3.pytree import convert
-
-
 class Star_Cinema:
     hall_list = []
 
@@ -81,11 +81,10 @@ class Hall(Star_Cinema):
 
         if self.seats[id][row][col] == "free":
             self.seats[id][row][col] = (customer_name, customer_phone_number)
-            print(self.seats)
-            print("Seat booked successfully")
+            print(f"\n{seat_choice.upper()} Seat booked successfully\n")
             return
         else:
-            print("Seat already booked")
+            print("\nSeat already booked\n")
             return
 
     # view all shows
@@ -116,9 +115,35 @@ class Hall(Star_Cinema):
             return
 
 
-h = Hall(5, 5, "ae123")
-h.entry_show("ae1234", "NULL", "1:00")
-h.entry_show("ae1235", "OK Google", "1:00")
-h.book_seats("iinaamasum", "123456789", "ae1234")
-h.view_show_list()
-h.view_available_seats("ae1234")
+if __name__ == "__main__":
+    hall = Hall(5, 5, "Hall123")
+    hall.entry_show("Show1234", "Aj Robibar - Natok", "Oct 31, 2022 1:00PM")
+    hall.entry_show("Show0011", "Aynabaji - Movie", "Oct 31, 2022 9:00PM")
+
+    print("Welcome to Star Cinema")
+    while True:
+        print("#" * 80)
+        print("1) View all shows.")
+        print("2) Available seats.")
+        print("3) Book seats.")
+        print("0) Exit.")
+        print("#" * 80)
+        print()
+
+        choice = int(input("Enter your choice: "))
+        if choice == 1:
+            hall.view_show_list()
+        elif choice == 2:
+            id = input("Enter the show id: ")
+            hall.view_available_seats(id)
+        elif choice == 3:
+            name = input("Enter your name: ")
+            phone = input("Enter your phone number: ")
+            id = input("Enter the show id: ")
+            hall.book_seats(name, phone, id)
+        elif choice == 0:
+            print("Good bye!")
+            break
+        else:
+            print("Invalid choice provided")
+            continue
