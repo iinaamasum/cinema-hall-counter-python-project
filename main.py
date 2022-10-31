@@ -6,7 +6,7 @@
 
 """ 
     * description:
-    Make a method in Hall class named book_seats() which will take the customer name, phone number, an id of the show and list of tuples where every tuple contains the row and col of the seat. You need to check the id of the show, and book the seats. 	
+    Make a method in Hall class named view_show_list() which will view all the shows running.	
 """
 
 # Star_Cinema class
@@ -25,7 +25,7 @@ class Star_Cinema:
 class Hall(Star_Cinema):
     def __init__(self, rows, cols, hall_no) -> None:
         self.seats = {}
-        self.show_list = [()]
+        self.show_list = []
         self.rows = rows
         self.cols = cols
         self.hall_no = hall_no
@@ -44,7 +44,6 @@ class Hall(Star_Cinema):
     # convert choice into row and col
     def convert_choice(self, choice):
         choice = choice.upper()
-        print(choice)
 
         # checking row
         if ord(choice[0]) - 65 > self.rows - 1:
@@ -87,7 +86,17 @@ class Hall(Star_Cinema):
             print("Seat already booked")
             return
 
+    # view all shows
+    def view_show_list(self):
+        print("-" * 80)
+        print("Show list:\n")
+        for i in self.show_list:
+            print(f"Show ID: {i[0]}\t\tStart Time: {i[2]}\t\tShow Name: {i[1]}")
+        print("-" * 80)
+
 
 h = Hall(5, 5, "ae123")
 h.entry_show("ae1234", "NULL", "1:00")
-h.book_seats("iinaamasum", "123456789", "ae1234")
+h.entry_show("ae1234", "OK Google", "1:00")
+# h.book_seats("iinaamasum", "123456789", "ae1234")
+h.view_show_list()
