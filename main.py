@@ -4,15 +4,6 @@
  * Date: 31/10/2022
 """
 
-""" 
-    * description:
-    Make a method in Hall class named view_available_seats() which will take an id of show, and view the seats that are available in that show	
-"""
-
-import re
-from secrets import choice
-from xml.etree.ElementInclude import default_loader
-
 
 # Star_Cinema class
 class Star_Cinema:
