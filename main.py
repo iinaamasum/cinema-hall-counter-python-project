@@ -6,13 +6,7 @@
 
 """ 
     * description:
-    Make a class named Hall which will have 5 instance attributes given below	
-        seats which is an dictionary of seats information
-        show_list which is an list of tuples
-        rows which is the row of the seats in that hall
-        cols which is the column of the seats in that hall
-        hall_no which is the unique no. of that hall
-Initialize an object of class Hall with rows, cols and hall_no. And insert that object to the Star_Cinema class attribute named hall_list inside the initializer using inheritance. seats and show_list will be empty initially.
+    Make a method in Hall class named entry_show() which will take id, movie_name and time in string format. Make a tuple with all of the information and append it to the show_list attribute. Allocate seats with rows and cols using 2d list, initially all seats will be free. Make a key with id to the attribute seats and value will be the 2d list.
 """
 
 # Star_Cinema class
@@ -33,3 +27,19 @@ class Hall(Star_Cinema):
         self.cols = cols
         self.hall_no = hall_no
         Star_Cinema.entry_hall(self, self)
+
+    # show entry
+    def entry_show(self, id, movie_name, time):
+        info = (id, movie_name, time)
+        self.show_list.append(info)
+
+        for i in range(self.rows):
+            self.seats[id] = []
+            for j in range(self.cols):
+                self.seats[id].append(["free" for i in range(self.cols)])
+
+        print(self.seats)
+
+
+h = Hall(5, 5, "ae123")
+h.entry_show("ae1234", "NULL", "1:00")
