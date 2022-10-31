@@ -7,40 +7,39 @@
 
 # Star_Cinema class
 class Star_Cinema:
-    hall_list = []
+    _hall_list = []
 
     # hall entry
     def entry_hall(self, hall):
-        self.hall_list.append(hall)
+        self._hall_list.append(hall)
 
 
 # Hall class
 class Hall(Star_Cinema):
     def __init__(self, rows, cols, hall_no) -> None:
-        self.seats = {}
-        self.show_list = []
-        self.rows = rows
-        self.cols = cols
-        self.hall_no = hall_no
+        self.__seats = {}
+        self.__show_list = []
+        self.__rows = rows
+        self.__cols = cols
+        self.__hall_no = hall_no
         Star_Cinema.entry_hall(self, self)
 
     # show entry
     def entry_show(self, id, movie_name, time):
         info = (id, movie_name, time)
-        self.show_list.append(info)
+        self.__show_list.append(info)
 
-        for i in range(self.rows):
-            self.seats[id] = []
-            for j in range(self.cols):
-                self.seats[id].append(["free" for i in range(self.cols)])
-        print(f"\n{movie_name} added successfully\n")
+        for i in range(self.__rows):
+            self.__seats[id] = []
+            for j in range(self.__cols):
+                self.__seats[id].append(["free" for i in range(self.__cols)])
 
     # convert choice into row and col
     def convert_choice(self, choice):
         choice = choice.upper()
 
         # checking row
-        if ord(choice[0]) - 65 > self.rows - 1:
+        if ord(choice[0]) - 65 > self.__rows - 1:
             print()
             print("Choice is out of the capacity of the hall")
             return -1, -1
@@ -52,9 +51,9 @@ class Hall(Star_Cinema):
             return -1, -1
 
         # checking col
-        if 0 < int(choice[1]) <= self.cols:
+        if 0 < int(choice[1]) <= self.__cols:
             col = int(choice[1]) - 1
-        elif int(choice[1]) > self.cols:
+        elif int(choice[1]) > self.__cols:
             print()
             print("Choice is out of the capacity of the hall")
             return -1, -1
@@ -66,7 +65,7 @@ class Hall(Star_Cinema):
 
     # book seats
     def book_seats(self, customer_name, customer_phone_number, id):
-        if not id in self.seats:
+        if not id in self.__seats:
             print("Invalid show id provided")
             return
         seats_request = int(input("Enter the number of seats you want to book: "))
@@ -79,8 +78,8 @@ class Hall(Star_Cinema):
                 print("Enter seat number again")
                 print()
 
-            elif self.seats[id][row][col] == "free":
-                self.seats[id][row][col] = (customer_name, customer_phone_number)
+            elif self.__seats[id][row][col] == "free":
+                self.__seats[id][row][col] = (customer_name, customer_phone_number)
                 seat_choice.append(seat_number.upper())
                 seats_request -= 1
                 count += 1
@@ -95,7 +94,7 @@ class Hall(Star_Cinema):
             f"Customer Name: {customer_name}\t\tCustomer Phone Number: {customer_phone_number}"
         )
         print()
-        for show in self.show_list:
+        for show in self.__show_list:
             if show[0] == id:
                 print(f"Show Name: {show[1]}\t\tShow Time: {show[2]}")
                 break
@@ -104,7 +103,7 @@ class Hall(Star_Cinema):
             print(f"{i}", end="")
             if i != seat_choice[-1]:
                 print(", ", end="")
-        print("\t\t\t\tHall No: ", self.hall_no)
+        print("\t\t\tHall No: ", self.__hall_no)
         print("+" * 80)
         print()
 
@@ -113,19 +112,19 @@ class Hall(Star_Cinema):
         print()
         print("-" * 80)
         print("Show list:\n")
-        for i in self.show_list:
+        for i in self.__show_list:
             print(f"Show ID: {i[0]}\t\tStart Time: {i[2]}\t\tShow Name: {i[1]}")
         print("-" * 80)
         print()
 
     # view available show seats by id
     def view_available_seats(self, id):
-        if id in self.seats:
+        if id in self.__seats:
             print("=" * 80)
             print("Available seats:\n")
-            for i in range(self.rows):
-                for j in range(self.cols):
-                    if self.seats[id][i][j] != "free":
+            for i in range(self.__rows):
+                for j in range(self.__cols):
+                    if self.__seats[id][i][j] != "free":
                         print("Booked\t\t", end=" ")
                     else:
                         print(f"{chr(i + 65)}{j + 1}\t\t", end=" ")
@@ -170,6 +169,7 @@ if __name__ == "__main__":
             show_name = input("Enter the show name: ")
             show_time = input("Enter the show time: ")
             hall.entry_show(show_id, show_name, show_time)
+            print(f"\n{show_name} added successfully")
         elif choice == 0:
             print("Good bye!")
             break
