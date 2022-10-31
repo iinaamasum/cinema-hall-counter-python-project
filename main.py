@@ -6,8 +6,10 @@
 
 """ 
     * description:
-    Make a method in Hall class named view_show_list() which will view all the shows running.	
+    Make a method in Hall class named view_available_seats() which will take an id of show, and view the seats that are available in that show	
 """
+
+import re
 
 # Star_Cinema class
 from lib2to3.pytree import convert
@@ -93,10 +95,30 @@ class Hall(Star_Cinema):
         for i in self.show_list:
             print(f"Show ID: {i[0]}\t\tStart Time: {i[2]}\t\tShow Name: {i[1]}")
         print("-" * 80)
+        print()
+
+    # view available show seats by id
+    def view_available_seats(self, id):
+        if id in self.seats:
+            print("=" * 80)
+            print("Available seats:\n")
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    if self.seats[id][i][j] != "free":
+                        print("Booked\t\t", end=" ")
+                    else:
+                        print(f"{chr(i + 65)}{j + 1}\t\t", end=" ")
+                print()
+            print("=" * 80)
+            print()
+        else:
+            print("Invalid show id provided")
+            return
 
 
 h = Hall(5, 5, "ae123")
 h.entry_show("ae1234", "NULL", "1:00")
-h.entry_show("ae1234", "OK Google", "1:00")
-# h.book_seats("iinaamasum", "123456789", "ae1234")
+h.entry_show("ae1235", "OK Google", "1:00")
+h.book_seats("iinaamasum", "123456789", "ae1234")
 h.view_show_list()
+h.view_available_seats("ae1234")
