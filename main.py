@@ -33,6 +33,7 @@ class Hall(Star_Cinema):
             self.seats[id] = []
             for j in range(self.cols):
                 self.seats[id].append(["free" for i in range(self.cols)])
+        print(f"\n{movie_name} added successfully\n")
 
     # convert choice into row and col
     def convert_choice(self, choice):
@@ -40,11 +41,13 @@ class Hall(Star_Cinema):
 
         # checking row
         if ord(choice[0]) - 65 > self.rows - 1:
+            print()
             print("Choice is out of the capacity of the hall")
             return -1, -1
         elif "A" <= choice[0] <= "Z":
             row = ord(choice[0]) - 65
         else:
+            print()
             print("Invalid seat number provided")
             return -1, -1
 
@@ -52,9 +55,11 @@ class Hall(Star_Cinema):
         if 0 < int(choice[1]) <= self.cols:
             col = int(choice[1]) - 1
         elif int(choice[1]) > self.cols:
+            print()
             print("Choice is out of the capacity of the hall")
             return -1, -1
         else:
+            print()
             print("Invalid seat number provided")
             return -1, -1
         return row, col
@@ -64,22 +69,48 @@ class Hall(Star_Cinema):
         if not id in self.seats:
             print("Invalid show id provided")
             return
-        seat_choice = input("Enter the seat number: ")
-        row, col = self.convert_choice(seat_choice)
+        seats_request = int(input("Enter the number of seats you want to book: "))
+        seat_choice = []
+        count = 1
+        while seats_request > 0:
+            seat_number = input(f"Enter seat choice {count}: ")
+            row, col = self.convert_choice(seat_number)
+            if row == -1 or col == -1:
+                print("Enter seat number again")
+                print()
 
-        if row == -1 or col == -1:
-            return
+            elif self.seats[id][row][col] == "free":
+                self.seats[id][row][col] = (customer_name, customer_phone_number)
+                seat_choice.append(seat_number.upper())
+                seats_request -= 1
+                count += 1
+            else:
+                print("\nSeat already booked\n")
+                print("Enter seat number again")
+                print()
 
-        if self.seats[id][row][col] == "free":
-            self.seats[id][row][col] = (customer_name, customer_phone_number)
-            print(f"\n{seat_choice.upper()} Seat booked successfully\n")
-            return
-        else:
-            print("\nSeat already booked\n")
-            return
+        print("\nSeats booked successfully")
+        print("+" * 80)
+        print(
+            f"Customer Name: {customer_name}\t\tCustomer Phone Number: {customer_phone_number}"
+        )
+        print()
+        for show in self.show_list:
+            if show[0] == id:
+                print(f"Show Name: {show[1]}\t\tShow Time: {show[2]}")
+                break
+        print("Seats:\t", end="")
+        for i in seat_choice:
+            print(f"{i}", end="")
+            if i != seat_choice[-1]:
+                print(", ", end="")
+        print("\t\t\t\tHall No: ", self.hall_no)
+        print("+" * 80)
+        print()
 
     # view all shows
     def view_show_list(self):
+        print()
         print("-" * 80)
         print("Show list:\n")
         for i in self.show_list:
@@ -113,10 +144,12 @@ if __name__ == "__main__":
 
     print("Welcome to Star Cinema")
     while True:
+        print()
         print("#" * 80)
         print("1) View all shows.")
         print("2) Available seats.")
         print("3) Book seats.")
+        print("4) Add Show.")
         print("0) Exit.")
         print("#" * 80)
         print()
@@ -132,6 +165,11 @@ if __name__ == "__main__":
             phone = input("Enter your phone number: ")
             id = input("Enter the show id: ")
             hall.book_seats(name, phone, id)
+        elif choice == 4:
+            show_id = input("Enter the show id: ")
+            show_name = input("Enter the show name: ")
+            show_time = input("Enter the show time: ")
+            hall.entry_show(show_id, show_name, show_time)
         elif choice == 0:
             print("Good bye!")
             break
